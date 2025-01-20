@@ -3,14 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using A2App;
 
-namespace A2App
+namespace TestA2App
 {
-    internal class Program
+    public class Class1
     {
-        static void Main(string[] args)
-        {
-
-        }
     }
 }
