@@ -8,10 +8,10 @@ namespace A2App
 {
     public class Product
     {
-        public int ProdID { get; set; }
+        public int ProdID { get; set; } //7 - 70,000
         public string ProdName { get; set; }
-        public decimal ItemPrice { get; set; }
-        public int StockAmount { get; set; }
+        public decimal ItemPrice { get; set; } //$7 - 7000
+        public int StockAmount { get; set; } //7 - 700,000
 
         public Product(int prodID, string prodName, decimal itemPrice, int stockAmount = 0)
         {
@@ -44,6 +44,38 @@ namespace A2App
             }
 
             StockAmount -= decreaseAmount;
+        }
+
+        public static string ValidProductID(Product product)
+        {
+            string result;
+
+            if (product.ProdID >= 7 && product.ProdID <= 70000)
+            {
+                result = "Product ID is VALID";
+            }
+            else
+            {
+                result = "Product ID is NOT VALID";
+            }
+
+            return result;
+        }
+
+        public static string ValidProductName(Product product)
+        {
+            string result;
+
+            if ((product.ProdName != null) && (product.ProdName.Length > 0) && (product.ProdName.Replace(" ", string.Empty) != string.Empty))
+            {
+                result = "Product name is VALID";
+            }
+            else
+            {
+                result = "Product name is NOT VALID";
+            }
+
+            return result;
         }
     }
 }
