@@ -8,10 +8,59 @@ namespace A2App
 {
     public class Product
     {
-        public int ProdID { get; set; } //7 - 70,000
-        public string ProdName { get; set; }
-        public decimal ItemPrice { get; set; } //$7 - 7000
-        public int StockAmount { get; set; } //7 - 700,000
+        private int _prodID;
+        private string _productName;
+        private decimal _itemPrice;
+        private int _stockAmount;
+        public int ProdID //7 - 70,000
+        {
+            get { return _prodID; }
+            set
+            {
+                if (value < 7 || value > 70000)
+                    throw new ArgumentOutOfRangeException(nameof(ProdID), "Product ID is NOT VALID.");
+                _prodID = value;
+            }
+        } 
+        
+        public string ProdName 
+        { 
+            get{
+                return _productName;
+            } 
+            set{
+                value = value.Trim();
+                if (value == null || value.Length == 0 || value == string.Empty)
+                {
+                    throw new ArgumentException("Product name cannot be empty or whitespace.", nameof(ProdName));
+                }
+                _productName = value;
+            } 
+        }
+        
+        public decimal ItemPrice //$7 - 7000
+        {
+            get { return _itemPrice; }
+            set
+            {
+                if (value < 7 || value > 7000)
+                    throw new ArgumentOutOfRangeException(nameof(ItemPrice), "Item price must be between $7 and $7000.");
+                _itemPrice = value;
+            }
+        }
+        
+        public int StockAmount  //7 - 700,000
+        { 
+            get{
+                return _stockAmount;
+            } set{
+                if (value < 7 || value > 700000)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(StockAmount), "Stock amount must be between 7 and 700,000.");
+                }
+                _stockAmount = value;
+            } 
+        }
 
         public Product(int prodID, string prodName, decimal itemPrice, int stockAmount = 0)
         {
@@ -19,6 +68,7 @@ namespace A2App
             ProdName = prodName;
             ItemPrice = itemPrice;
             StockAmount = stockAmount;
+
         }
 
         // Methods

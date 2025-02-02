@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using System;
 
 namespace A2App
 {
@@ -12,6 +13,19 @@ namespace A2App
          *  Elowynne Xiong
          *      - Product ID Tests (3)
          *      - Product Name Tests (3)
+         *  Huiwen Cai
+         *      - ItemPrice Tests (3): 
+         *          [Test cases]: valid input/input below minimum value/input above max value
+         *          [Why]: the ItemPrice setter validates for a value range within 7-7000,
+         *                 and the constructor populate the field using the property constructor,
+         *                 these tests are essential to ensure the product constructor works properly
+         *                 at each innitiation.
+         *      - StockAmount Tests (3)
+         *          [Test cases]: valid input/input below minimum value/input above max value
+         *          [Why]: the StockAmount setter validates for a value range within 7-70,000,
+         *                 and the constructor populate the field using the property constructor,
+         *                 these tests are essential to ensure the product constructor works properly
+         *                 at each innitiation. 
          */
     }
 
@@ -26,38 +40,41 @@ namespace A2App
             string _productName = "TShirt";
             decimal _productPrice = 12;
             int _productStock = 500;
-
-            Product testProduct = new Product(_productID, _productName, _productPrice, _productStock);
-            string expected = "Product ID is VALID";
-
+            
             //Act
-            string actual = Product.ValidProductID(testProduct);
+            Product testProduct = new Product(_productID, _productName, _productPrice, _productStock);
+
 
             //Assert
-            Assert.That(expected, Is.EqualTo(actual));
+            Assert.That(testProduct.ProdID, Is.EqualTo(7));
         }
 
         [Test]
-        public void ValidProductID_Input6andTShirtand12_OutputValidProductID()
+        public void ValidProductID_Input6andTShirtand12_ThrowsException()
         {
             //Arrange
             int _productID = 6;
             string _productName = "TShirt";
             decimal _productPrice = 12;
             int _productStock = 500;
-
-            Product testProduct = new Product(_productID, _productName, _productPrice, _productStock);
-            string expected = "Product ID is NOT VALID";
+            ArgumentOutOfRangeException error = null;
 
             //Act
-            string actual = Product.ValidProductID(testProduct);
+            try
+            {
+                Product testProduct = new Product(_productID, _productName, _productPrice, _productStock);
+            }catch (ArgumentOutOfRangeException e)
+            {
+                error = e;
+            }
+            
 
             //Assert
-            Assert.That(expected, Is.EqualTo(actual));
+            Assert.That(error.ParamName, Is.EqualTo("ProdID"));
         }
 
         [Test]
-        public void ValidProductID_Input70001andTShirtand12_OutputValidProductID()
+        public void ValidProductID_Input70001andTShirtand12_ThrowsException()
         {
             //Arrange
             int _productID = 70001;
@@ -65,14 +82,21 @@ namespace A2App
             decimal _productPrice = 12;
             int _productStock = 500;
 
-            Product testProduct = new Product(_productID, _productName, _productPrice, _productStock);
-            string expected = "Product ID is NOT VALID";
+            ArgumentOutOfRangeException error = null;
 
             //Act
-            string actual = Product.ValidProductID(testProduct);
+            try
+            {
+                Product testProduct = new Product(_productID, _productName, _productPrice, _productStock);
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                error = e;
+            }
+
 
             //Assert
-            Assert.That(expected, Is.EqualTo(actual));
+            Assert.That(error.ParamName, Is.EqualTo("ProdID"));
         }
     }
 
@@ -88,33 +112,35 @@ namespace A2App
             decimal _productPrice = 12;
             int _productStock = 500;
 
-            Product testProduct = new Product(_productID, _productName, _productPrice, _productStock);
-            string expected = "Product name is VALID";
-
             //Act
-            string actual = Product.ValidProductName(testProduct);
+            Product testProduct = new Product(_productID, _productName, _productPrice, _productStock);
 
             //Assert
-            Assert.That(expected, Is.EqualTo(actual));
+            Assert.That(testProduct.ProdName, Is.EqualTo("TShirt"));
         }
 
         [Test]
-        public void ValidProductName_Input10andNULLand12and500_ValidProductName()
+        public void ValidProductName_Input10andNULLand12and500_ThrowsException()
         {
             //Arrange
             int _productID = 10;
             string _productName = "";
             decimal _productPrice = 12;
             int _productStock = 500;
-
-            Product testProduct = new Product(_productID, _productName, _productPrice, _productStock);
-            string expected = "Product name is NOT VALID";
+            ArgumentException error = null;
 
             //Act
-            string actual = Product.ValidProductName(testProduct);
+            try
+            {
+            Product testProduct = new Product(_productID, _productName, _productPrice, _productStock);
+            }catch(ArgumentException e)
+            {
+                error = e;
+            }
 
             //Assert
-            Assert.That(expected, Is.EqualTo(actual));
+            Assert.That(error, Is.Not.Null);
+            Assert.That(error.ParamName, Is.EqualTo("ProdName"));
         }
 
         [Test]
@@ -125,15 +151,155 @@ namespace A2App
             string _productName = "     ";
             decimal _productPrice = 12;
             int _productStock = 500;
-
-            Product testProduct = new Product(_productID, _productName, _productPrice, _productStock);
-            string expected = "Product name is NOT VALID";
+            ArgumentException error = null;
 
             //Act
-            string actual = Product.ValidProductName(testProduct);
+            try
+            {
+                Product testProduct = new Product(_productID, _productName, _productPrice, _productStock);
+            }
+            catch (ArgumentException e)
+            {
+                error = e;
+            }
 
             //Assert
-            Assert.That(expected, Is.EqualTo(actual));
+            Assert.That(error, Is.Not.Null);
+            Assert.That(error.ParamName, Is.EqualTo("ProdName"));
+        }
+    }
+
+    // ------------------- Tests for ItemPrice -------------------
+    [TestFixture]
+    public class TestingItemPrice
+    {
+        [Test]
+        public void ItemPrice_InputValidValue1000_OutputValidItemPrice()
+        {
+            // Arrange & Act
+            Product testProduct = new Product(10, "pen", 1000, 500);
+
+            // Assert
+            Assert.That(testProduct.ItemPrice, Is.EqualTo(1000));
+        }
+
+        [Test]
+        public void ItemPrice_InputBelowMinValue6_ThrowsArgumentOutOfRangeException()
+        {
+            // Arrange
+            int _productID = 10;
+            string _productName = "Pen";
+            decimal _productPrice = 6;
+            int _productStock = 500;
+
+            // Act
+            ArgumentOutOfRangeException error = null;
+
+            try
+            {
+                Product testProduct = new Product(_productID, _productName, _productPrice, _productStock);
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                error = e;
+            }
+
+            // Assert
+            Assert.That(error, Is.Not.Null);  // Corrected here
+            Assert.That(error.ParamName, Is.EqualTo("ItemPrice"));
+        }
+
+        [Test]
+        public void ItemPrice_InputAboveMaxValue7001_ThrowsArgumentOutOfRangeException()
+        {
+            // Arrange
+            int _productID = 10;
+            string _productName = "Pen";
+            decimal _productPrice = 7001;
+            int _productStock = 500;
+
+            // Act
+            ArgumentOutOfRangeException error = null;
+
+            try
+            {
+                Product testProduct = new Product(_productID, _productName, _productPrice, _productStock);
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                error = e;
+            }
+
+            // Assert
+            Assert.That(error, Is.Not.Null);  // Corrected here
+            Assert.That(error.ParamName, Is.EqualTo("ItemPrice"));
+        }
+    }
+
+    // ------------------- Tests for StockAmount -------------------
+    [TestFixture]
+    public class TestingStockAmount
+    {
+        [Test]
+        public void StockAmount_SetValidValue50000_DoesNotThrow()
+        {
+            // Arrange & Act
+            var product = new Product(100, "Laptop", 500, 50000);
+
+            // Assert
+            Assert.That(product.StockAmount, Is.EqualTo(50000));
+        }
+
+        [Test]
+        public void StockAmount_InputBelowMinValue6_ThrowsArgumentOutOfRangeException()
+        {
+            // Arrange
+            // Arrange
+            int _productID = 10;
+            string _productName = "Pen";
+            decimal _productPrice = 500;
+            int _productStock = 6;
+            ArgumentOutOfRangeException error = null;
+
+            // Act
+            try
+            {
+                Product testProduct = new Product(_productID, _productName, _productPrice, _productStock);
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                error = e;
+            }
+
+            // Assert
+            Assert.That(error, Is.Not.Null);
+            Assert.That(error.ParamName, Is.EqualTo("StockAmount"));
+        }
+
+        [Test]
+        public void StockAmount_InputAboveMaxValue6_ThrowsArgumentOutOfRangeException()
+        {
+            // Arrange
+            // Arrange
+            int _productID = 10;
+            string _productName = "Pen";
+            decimal _productPrice = 500;
+            int _productStock = 700001;
+            ArgumentOutOfRangeException error = null;
+
+            // Act
+            try
+            {
+                Product testProduct = new Product(_productID, _productName, _productPrice, _productStock);
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                error = e;
+            }
+
+            // Assert
+            Assert.That(error, Is.Not.Null);
+            Assert.That(error.ParamName, Is.EqualTo("StockAmount"));
         }
     }
 }
