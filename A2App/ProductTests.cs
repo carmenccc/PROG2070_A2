@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using NUnit.Framework.Internal;
 using System;
 
 namespace A2App
@@ -13,6 +14,9 @@ namespace A2App
          *  Elowynne Xiong
          *      - Product ID Tests (3)
          *      - Product Name Tests (3)
+         *  Annlin Padammattumel George
+         *      -DecreaseStock Tests(3)
+         *      -IncreaseStock Tests(3)
          *  Huiwen Cai
          *      - ItemPrice Tests (3): 
          *          [Test cases]: valid input/input below minimum value/input above max value
@@ -301,5 +305,146 @@ namespace A2App
             Assert.That(error, Is.Not.Null);
             Assert.That(error.ParamName, Is.EqualTo("StockAmount"));
         }
+    }
+
+    // ------------------- Tests for DecreaseStock -------------------
+    [TestFixture]
+    public class TestsForDecreaseStock
+    {
+        [Test]
+        public void DecreaseStock_DecreaseAmountInput_Negetive1()
+        {
+            // Arrange
+            int _productID = 10;
+            string _productName = "Tshirt";
+            decimal _productPrice = 12;
+            int _productStock = 500;
+            int _decreaseStockValue = -1;
+            string actual = "";
+            Product testProduct = new Product(_productID, _productName, _productPrice, _productStock);
+            string expected = "Invalid amount input.";
+            // act
+            try
+            {
+                testProduct.DecreaseStock(_decreaseStockValue);
+
+            }
+            catch (Exception ex)
+            { 
+            actual = ex.Message;
+            }
+            // Assert
+            Assert.That (actual, Is.EqualTo(expected));
+        }
+        [Test]
+        public void DecreaseStock_DecreaseAmountInput_700()
+        {
+            // Arrange
+            int _productID = 10;
+            string _productName = "Tshirt";
+            decimal _productPrice = 12;
+            int _productStock = 500;
+            int _decreaseStockValue = 700;
+            string actual = "";
+            Product testProduct = new Product(_productID, _productName, _productPrice, _productStock);
+            string expected = "The amount exists current stocking!";
+            // act
+            try
+            {
+                testProduct.DecreaseStock(_decreaseStockValue);
+
+            }
+            catch (Exception ex)
+            {
+                actual = ex.Message;
+            }
+            // Assert
+            Assert.That(actual, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void DecreaseStock_DecreaseAmountInput_400()
+        {
+            // Arrange
+            int _productID = 10;
+            string _productName = "Tshirt";
+            decimal _productPrice = 12;
+            int _productStock = 500;
+            int _decreaseStockValue = 400;
+            Product testProduct = new Product(_productID, _productName, _productPrice, _productStock);
+            int expected = 100 ;
+            // act
+            testProduct.DecreaseStock(_decreaseStockValue);
+            int actual = testProduct.StockAmount;
+            // Assert
+            Assert.That(actual, Is.EqualTo(expected));
+        }
+    }
+    // ------------------- Tests for IncreaseStock -------------------
+
+    [TestFixture]
+    public class TestsForIncreaseStock
+    {
+        [Test]
+        public void IncreaseStock_IncreaseAmountInput_Negetive1()
+        {
+            // Arrange
+            int _productID = 10;
+            string _productName = "Tshirt";
+            decimal _productPrice = 12;
+            int _productStock = 500;
+            int _increaseStockValue = -1;
+            string actual = "";
+            Product testProduct = new Product(_productID, _productName, _productPrice, _productStock);
+            string expected = "Invalid amount input.";
+            // act
+            try
+            {
+                testProduct.IncreaseStock(_increaseStockValue);
+
+            }
+            catch (Exception ex)
+            {
+                actual = ex.Message;
+            }
+            // Assert
+            Assert.That(actual, Is.EqualTo(expected));
+        }
+        [Test]
+        public void IncreaseStock_IncreaseAmountInput_700()
+        {
+            // Arrange
+            int _productID = 10;
+            string _productName = "Tshirt";
+            decimal _productPrice = 12;
+            int _productStock = 500;
+            int _increaseStockValue = 700;
+            Product testProduct = new Product(_productID, _productName, _productPrice, _productStock);
+            int expected = 1200;
+            // act
+            testProduct.IncreaseStock(_increaseStockValue);
+            int actual = testProduct.StockAmount;
+            // Assert
+            Assert.That(actual, Is.EqualTo(expected));
+        }
+        [Test]
+        public void IncreaseStock_IncreaseAmountInput_Zero()
+        {
+            // Arrange
+            int _productID = 10;
+            string _productName = "Tshirt";
+            decimal _productPrice = 12;
+            int _productStock = 500;
+            int _increaseStockValue = 0;
+            Product testProduct = new Product(_productID, _productName, _productPrice, _productStock);
+            int expected = 500;
+            // act
+            testProduct.IncreaseStock(_increaseStockValue);
+            int actual = testProduct.StockAmount;
+            // Assert
+            Assert.That(actual, Is.EqualTo(expected));
+        }
+
+
     }
 }
