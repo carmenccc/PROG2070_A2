@@ -16,7 +16,15 @@ namespace A2App
          *      - Product Name Tests (3)
          *  Annlin Padammattumel George
          *      -DecreaseStock Tests(3)
+         *        Test Cases 
+         *          1) Checks the value is negetive
+         *          2) checks if the value Exceeds the current value
+         *          3) Checks the value successfully subtracts from the stock
          *      -IncreaseStock Tests(3)
+         *        Test Cases
+         *          1) Checks the value is negetive
+         *          2) Made sure the Method is not failing even if the value is zero
+         *          3) Checks the value successfully adds to the stock
          *  Huiwen Cai
          *      - ItemPrice Tests (3): 
          *          [Test cases]: valid input/input below minimum value/input above max value
