@@ -13,7 +13,14 @@ namespace A2App
          *  Written Tests distribution
          *  Elowynne Xiong
          *      - Product ID Tests (3)
+         *          1) Valid test case (ensure program recognizes valid IDs)
+         *          2) Checks to ensure that the program does NOT accept IDs below the given threshold (7-70000)
+         *          3) Checks to ensure that the program does NOT accept IDs above the given threshold (7-70000)
          *      - Product Name Tests (3)
+         *          1) Valid test case (ensure that the program recognizes valid Product names)
+         *              --> Not null && not empty
+         *          2) Checks to ensure that the program does not accept NULL entries
+         *          3) Checks to ensure that the program does not accept EMPTY entries
          *  Annlin Padammattumel George
          *      -DecreaseStock Tests(3)
          *        Test Cases 
@@ -41,6 +48,7 @@ namespace A2App
          */
     }
 
+    // ------------------- Tests for ProductID -------------------
     [TestFixture]
     public class TestingProductID
     {
@@ -112,6 +120,7 @@ namespace A2App
         }
     }
 
+    // ------------------- Tests for ProductName -------------------
     [TestFixture]
     public class TestingProductName
     {
